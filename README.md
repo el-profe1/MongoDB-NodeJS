@@ -7,10 +7,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The things you need before installing the software.
+The things you need before running the files:
 
-* Visual Studio Code (VS Code)
 * Git
+* Visual Studio Code (VS Code)
 * MongoDB for VS Code
 
 ### Usage
