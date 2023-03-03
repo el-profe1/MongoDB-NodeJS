@@ -1,0 +1,88 @@
+use("sample_restaurants")
+
+//Busqueda basica con find
+// db.restaurants.find(
+//     {borough:"Brooklyn"}
+// )
+
+// La misma busqueda utilizando Aggregate
+// db.restaurants.aggregate([
+//     {
+//         $match: {borough:"Brooklyn"}
+//     }
+//     ])
+
+//La misma busqueda con projections
+// La busqueda con find...
+// db.restaurants.find(
+//     {borough:"Brooklyn"}, //find
+//     {_id:0,name:1} //los campos que quiero ver
+// )
+// ... es la misma que con aggregate
+// db.restaurants.aggregate([
+//     { 
+//         $match: {borough:"Brooklyn"} //es como el find
+//     },
+//     {
+//          $project:{_id:0,name:1} //los campos que requieron
+//     }
+//     ])
+
+// También podemos utilizar $sort
+// db.restaurants.aggregate([
+//     { 
+//         $match: {borough:"Brooklyn"} //es como el find
+//     },
+//     { 
+//         $match: {cuisine:"Mexican"} //es como el find
+//     },    
+//     {
+//          $project:{_id:0,name:1, zipcode:1} //los campos que requieron
+//     },
+//     {
+//         $sort:{name:1}
+//     }
+//     ]) 
+// Hagamos un LEFT JOIN entre los comentarios y las peliculas
+// el operador que utilizamos es $lookup
+// use("sample_mflix")
+// db.comments.aggregate([
+//     {
+//         /**
+//          * from: Coleccion Objetivo.
+//          * localField: El campo en mi coleccion actual que sirve como id.
+//          * foreignField: El campo en la coleccion objetivo.
+//          * as: Como voy a nombrar el resultado.
+//          */
+//         $lookup: {
+//           from: "movies",
+//           localField: "movie_id",
+//           foreignField: "_id",
+//           as: "datos_pelicula"
+//         }
+//     }
+// ])
+
+// //Agreguemos un campo a la consulta
+// use("sample_restaurants")
+// db.restaurants.aggregate([
+// {    
+//     $addFields: {promedio: {$avg:"$grades.score"}}
+// },
+// {
+//     $project:{_id:1,name:1,promedio:1}
+// }
+// ])
+
+// Desapachurramos el array
+// use("sample_restaurants")
+// db.restaurants.aggregate([
+// {
+//     $unwind: {path: "$grades"}
+// }])
+
+//Como consultar utilizando los id
+use("sample_restaurants")
+db.restaurants.find({
+    "_id":ObjectId("5eb3d668b31de5d588f4292a")
+})
