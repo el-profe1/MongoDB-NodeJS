@@ -1,0 +1,28 @@
+{
+    name: "4BR Stunning Island in Blue Sea with Pool KALUA",
+    summary: "Island hosted by Harold",
+    bedrooms: 1,
+    bathrooms: 1
+},
+{
+    name: "Charming Villa",
+    summary: "Exclusive Private Club in Apulo",
+    property_type: "House",
+    bedrooms: 5,
+    bathrooms: 4.5,
+    beds: 5
+},
+{
+    name: "Rest in Carmen de Apicala with WIFI",
+    property_type: "Manor",
+    bedrooms: 1,
+    bathroom: 1
+},
+{
+    name: "Beautiful Beach House",
+    summary: "Enjoy relaxed beach living in this house with a private beach",
+    bedrooms: 4,
+    bathrooms: 2.5,
+    beds: 7,
+    last_review: new Date()
+}
