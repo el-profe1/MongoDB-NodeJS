@@ -1,0 +1,27 @@
+[
+  { "nombre":"Fulano",
+    "apellido":"deTal",
+    "edad":21,
+    "estado":"Formacion"
+  },
+  { "nombre":"Perano",
+    "apellido":"deTal",
+    "edad":18,
+    "estado":"Condicionado"
+  },
+  { "nombre":"Mengano",
+    "apellido":"deTal",
+    "edad":16,
+    "estado":"Formacion"
+  },
+  { "nombre":"Sutano",
+    "apellido":"deTal",
+    "edad":20,
+    "estado":"Formacion"
+  },
+  { "nombre":"Pepito",
+    "apellido":"Perez",
+    "edad":20,
+    "estado":"Condicionado"
+  }
+]
