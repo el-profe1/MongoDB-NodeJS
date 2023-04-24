@@ -1,0 +1,100 @@
+use('ficha_2559205')
+
+/** READ o find en MongoDB*/
+//db.listado.find({})  //Nos trae todas las colecciones
+//db.listado.find({"nombre":"Sutano"}) // Todos los que cumplen la condicion
+//db.listado.findOne({"edad":{$eq:20}}) // El primero de todos los que cumplen la condicion
+//db.getCollection('listado').find({}) //Otra forma de llamar la coleccion
+//db.listado.find({}).limit(2) //Para limitar los documentos que me trae de la coleccion
+//db.listado.find().sort({"edad":-1}) //-1: DESC 1:ASC
+//db.listado.find({"_id":new ObjectId("64404e3d69e310a23271512e")})
+db.listado.find({}).skip(2).limit(2) //Se salta los dos primeros y me trae los dos siguientes
+
+/** PROYECCIONES */
+// Se usa para no traer todos los campos de las colecciones
+//db.listado.find({},{"_id":false,"nombre":true})
+
+/** Operadores logicos */
+// Todas las personas que tienen 19 o 20 años
+// db.listado.find(
+//     {
+//         $and:[
+//             {"edad":{$gte:19}},
+//             {"edad":{$lte:20}}
+//         ]
+//     }
+// )
+
+// db.listado.find(
+//     {
+//         $or:[
+//             {"edad":{$eq:18}},
+//             {"edad":{$eq:19}},
+//             {"edad":{$eq:20}}
+//         ]
+//     }
+// )
+
+// Esta expresion es igual a la $or anterior pero mas facil de leer
+// db.listado.find(
+//     {"edad":{$in:[18, 19, 20]}}
+// )
+// db.listado.find(
+//     {"edad":{$nin:[18, 19, 20]}}
+// )
+
+/** INSERT El Create db MongoDB */
+
+db.listado.insertOne( 
+    {
+        "nombre": "Julio",
+        "apellido": "Jaramillo",
+        "edad": 40,
+        "estado": true
+  }
+  )
+//   db.listado.find({})
+
+// INSERCION DE VARIOS ELEMENTOS
+// db.listado.insertMany([
+//     { "nombre":"Fulano",
+//       "apellido":"deTal",
+//       "edad":21,
+//       "estado":"Formacion"
+//     },
+//     { "nombre":"Perano",
+//       "apellido":"deTal",
+//       "edad":18,
+//       "estado":"Condicionado"
+//     },
+//     { "nombre":"Mengano",
+//       "apellido":"deTal",
+//       "edad":16,
+//       "estado":"Formacion"
+//     },
+//     { "nombre":"Sutano",
+//       "apellido":"deTal",
+//       "edad":20,
+//       "estado":"Formacion"
+//     },
+//     { "nombre":"Pepito",
+//       "apellido":"Perez",
+//       "edad":20,
+//       "estado":"Condicionado"
+//     }
+//   ])
+
+/** UPDATE Actualizacion en MongoDB*/
+
+//  db.listado.updateOne({
+//     "nombre":"Julio"
+// },{
+//     $set:{"edad":28}
+// })
+
+// db.listado.updateOne({
+//     "_id":new ObjectId("6446cd498dd80c40a65ce1d0")
+// },{
+//     $set:{"edad":18}
+// })
+// db.listado.find({})
