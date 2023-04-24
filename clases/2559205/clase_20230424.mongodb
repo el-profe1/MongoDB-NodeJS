@@ -1,14 +1,14 @@
 use('ficha_2559205')
 
-/** READ o find en MongoDB*/
+/** READ o find() en MongoDB*/
 //db.listado.find({})  //Nos trae todas las colecciones
 //db.listado.find({"nombre":"Sutano"}) // Todos los que cumplen la condicion
 //db.listado.findOne({"edad":{$eq:20}}) // El primero de todos los que cumplen la condicion
-//db.getCollection('listado').find({}) //Otra forma de llamar la coleccion
-//db.listado.find({}).limit(2) //Para limitar los documentos que me trae de la coleccion
+//db.getCollection('listado').find({}) //Otra forma de llaumar la coleccion
+//db.listado.find({}).limit(2) //Para limitar los documentos qe me trae de la coleccion
 //db.listado.find().sort({"edad":-1}) //-1: DESC 1:ASC
 //db.listado.find({"_id":new ObjectId("64404e3d69e310a23271512e")})
-db.listado.find({}).skip(2).limit(2) //Se salta los dos primeros y me trae los dos siguientes
+// db.listado.find({}).skip(2).limit(2) //Se salta los dos primeros y me trae los dos siguientes
 
 /** PROYECCIONES */
 // Se usa para no traer todos los campos de las colecciones
@@ -39,23 +39,26 @@ db.listado.find({}).skip(2).limit(2) //Se salta los dos primeros y me trae los d
 // db.listado.find(
 //     {"edad":{$in:[18, 19, 20]}}
 // )
+
+// Cuando buscamos algo que no está en la lista
 // db.listado.find(
 //     {"edad":{$nin:[18, 19, 20]}}
 // )
 
 /** INSERT El Create db MongoDB */
-
-db.listado.insertOne( 
-    {
-        "nombre": "Julio",
-        "apellido": "Jaramillo",
-        "edad": 40,
-        "estado": true
-  }
-  )
+// Insertar un documento
+// db.listado.insertOne( 
+//     {
+//         "nombre": "Julio",
+//         "apellido": "Jaramillo",
+//         "edad": 40,
+//         "estado": true
+//   }
+//   )
 //   db.listado.find({})
 
 // INSERCION DE VARIOS ELEMENTOS
+// Insertar varios documentos
 // db.listado.insertMany([
 //     { "nombre":"Fulano",
 //       "apellido":"deTal",
@@ -85,16 +88,80 @@ db.listado.insertOne(
 //   ])
 
 /** UPDATE Actualizacion en MongoDB*/
-
+// Actualizar el documento que tiene el nombre de Julio
 //  db.listado.updateOne({
 //     "nombre":"Julio"
 // },{
 //     $set:{"edad":28}
 // })
 
+// Actualizar por id
 // db.listado.updateOne({
 //     "_id":new ObjectId("6446cd498dd80c40a65ce1d0")
 // },{
 //     $set:{"edad":18}
 // })
+// db.listado.find({})
+
+// Crear un nuevo campo para todos los documentos
+// db.listado.updateMany(
+//   {
+//   email:{$exists:false} //Verificamos que el campo no exista
+//   },{
+//   $set:{"email":"aprendiz@sena.edu.co"} //Creamos el campo con un valor por defecto
+// }
+// )
+// db.listado.find({})
+
+// Eliminar un campo
+// db.listado.updateMany(
+//   {
+//   email:{$exists:true} //Antes de borrar verificamos si el campo existe en el tocumento
+//   },{
+//   $unset:{"email":true} // Luego lo borramos
+// }
+// )
+//db.listado.find({})
+
+/** UPSERT Si el campo existe lo modifica, si no, lo crea*/
+// db.listado.updateOne({
+//     "_id":new ObjectId("6446cd498dd80c40a65ce1d0") // Buscamos el _id especifico
+// },{
+//     $set:{"email":"julio.jaramillo@sena.edu.co"} // Le asignamos el valor del correo
+// })
+// db.listado.find({})
+
+// Creacion de un correo para todos los que no lo tienen
+// db.listado.updateMany(
+//   {
+//     email:{$exists:false} //Preguntamos si no tiene el correo
+//   },
+//   {
+//     $set:{"email":"aprendiz@sena.edu.co"} // Se crea el correo si no lo tiene
+//   },
+//   {
+//     $upsert:true // La opcion que dice que se cree si no lo tiene, es upsert
+//   }
+// )
+// db.listado.find({})
+
+/** Renombrar un campo para todos los documentos*/
+// db.listado.updateMany({},
+//   {
+//     $rename:{"email":"correo"}
+//   }
+//   )
+//db.listado.find({})
+
+/** DELETE en MongoDB*/
+// Eliminacion de todos los que tienen el valor de "Julio" en el campo "nombre"
+// db.listado.removeMany(
+//   {
+//     "nombre":"Julio"
+//   }
+//   )
+// db.listado.find({})
+
+// Eliminacion de todos los documentos de la base de datos
+db.listado.remove({})
 // db.listado.find({})
