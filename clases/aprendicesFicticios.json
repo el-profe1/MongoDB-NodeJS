@@ -4,7 +4,7 @@
     "edad":21,
     "estado":"Formacion",
     "email":"fulano@sena.edu.co",
-    "competencias":["MongoDB","Modelado"]
+    "Competencias":["MongoDB","Modelado"]
   },
   { "nombre":"Perano",
     "apellido":"deTal",
