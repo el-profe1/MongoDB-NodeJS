@@ -2,26 +2,34 @@
   { "nombre":"Fulano",
     "apellido":"deTal",
     "edad":21,
-    "estado":"Formacion"
+    "estado":"Formacion",
+    "email":"fulano@sena.edu.co",
+    "competencias":["MongoDB","Modelado"]
   },
   { "nombre":"Perano",
     "apellido":"deTal",
     "edad":18,
-    "estado":"Condicionado"
+    "estado":"Condicionado",
+    "email":"perano@sena.edu.co",
+    "Competencias":["HTML","CSS","JavaScript"]
   },
   { "nombre":"Mengano",
     "apellido":"deTal",
     "edad":16,
-    "estado":"Formacion"
+    "estado":"Formacion",
+    "email":"mengano@sena.edu.co"
   },
   { "nombre":"Sutano",
     "apellido":"deTal",
     "edad":20,
-    "estado":"Formacion"
+    "estado":"Formacion",
+    "email":"sutano@sena.edu.co",
+    "Competencias":["HTML","CSS","JavaScript"]
   },
   { "nombre":"Pepito",
     "apellido":"Perez",
     "edad":20,
-    "estado":"Condicionado"
+    "estado":"Condicionado",
+    "Competencias":["PHP","Analisis"]
   }
 ]
