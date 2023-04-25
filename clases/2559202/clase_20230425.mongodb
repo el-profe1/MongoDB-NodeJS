@@ -1,0 +1,118 @@
+use('ficha_2559202');
+//** READ o buscar o find() en MongoDB */
+// db.getCollection('listado').find({});
+// db.listado.find({}); //Me trae todos los elementos
+// findOne() me trae el primero de la coleccion
+// db.listado.findOne({
+//     "nombre":"Sutano" 
+// })
+// limit
+// db.listado.find({}).limit(2) //Solo me trae los 2 primeros
+// skip: salto n documentos
+//db.listado.find({}).skip(2).limit(1) // se salta los dos primeros y luego me trae 1 documento
+//db.listado.find({}).sort({"nombre":1}) //ordena la salida 1:ASC -1: DESC
+
+/** PROYECCIONES */
+// db.listado.find({},{"_id":false,"email":true}) //1er {}: La condicion que cumplen y el 2d0{}: los campos que quiero ver
+
+// OPERADORES LOGICOS
+// Busquemos persons que tengan 19 o 21 años
+// db.listado.find({
+//         $or:[
+//             {"edad":{$eq:19}},
+//             {"edad":{$eq:21}}
+//         ]
+//     })
+// todo lo que esta en la lista
+// db.listado.find({
+//     "edad":{$in:[19,21]} // Ojo no es rango! Son los valores que están en el arreglo
+// })
+
+//Todo lo que no esta en la lista
+// db.listado.find({
+//     "edad":{$nin:[19,21]} // Ojo no es rango! Son los valores que están en el arreglo
+// })
+
+db.listado.find({
+        $and:[
+            {"edad":{$gte:19}},
+            {"edad":{$lte:21}}
+        ]
+    })
+
+/** CREATE o insert en MongoDB */
+// db.listado.insertOne({
+//         "nombre": "Julio",
+//         "apellido": "Jaramillo",
+//         "edad": 40,
+//         "estado": "Condicionado",
+//         "email": "julio@sena.edu.co",
+//         "Competencias": [
+//           "MongoDB",
+//           "Analisis"
+//         ]
+// })
+
+/** UPDATE o modificaciones */
+
+// db.listado.updateOne({ 
+//         "_id": new ObjectId("6441b4a869e310a232843409") //encontrar elemento a modificar
+//     }, 
+//    {
+//         $set:{"edad":22} // campo y valor a modificar 
+//     })
+
+//db.listado.find({})
+
+// db.listado.updateMany({ 
+//         "email":{$exists: false} //encontrar elemento a modificar
+//     }, 
+//    {
+//         $set:{"email":"aprendiz@sena.edu.co"} // campo y valor a modificar 
+//     })
+
+/** DELETE o eliminacion de un registro */
+// db.listado.deleteOne({
+//     "nombre": "Julio" //Elimina el primer documento que cumple la condicion
+// })
+
+// db.listado.deleteMany({})
+// db.listado.insertMany([
+//     { "nombre":"Fulano",
+//       "apellido":"deTal",
+//       "edad":21,
+//       "estado":"Formacion",
+//       "email":"fulano@sena.edu.co",
+//       "Competencias":["MongoDB","Modelado"]
+//     },
+//     { "nombre":"Perano",
+//       "apellido":"deTal",
+//       "edad":18,
+//       "estado":"Condicionado",
+//       "email":"perano@sena.edu.co",
+//       "Competencias":["HTML","CSS","JavaScript"]
+//     },
+//     { "nombre":"Mengano",
+//       "apellido":"deTal",
+//       "edad":16,
+//       "estado":"Formacion",
+//       "email":"mengano@sena.edu.co"
+//     },
+//     { "nombre":"Sutano",
+//       "apellido":"deTal",
+//       "edad":20,
+//       "estado":"Formacion",
+//       "email":"sutano@sena.edu.co",
+//       "Competencias":["HTML","CSS","JavaScript"]
+//     },
+//     { "nombre":"Pepito",
+//       "apellido":"Perez",
+//       "edad":20,
+//       "estado":"Condicionado",
+//       "Competencias":["PHP","Analisis"]
+//     }
+//   ])
+
+//db.listado.find({"nombre":/^P/}) //Nombres que comiencen con P
+// db.listado.find({"nombre":/an/}) //Nombres que contengan an
+//db.listado.find({"nombre":/no$/}) //Nombres que terminen en no
