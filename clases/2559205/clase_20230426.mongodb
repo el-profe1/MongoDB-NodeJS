@@ -1,0 +1,109 @@
+// INCREMENTO DE VARIABLES
+//$inc: para incrementar valores
+
+// db.listado.updateMany({},{
+//     $inc:{"edad":1}
+// })
+
+//USO DE EXPRESIONES REGULARES o REGEX
+
+//Vamos a buscar todos los aprendices cuyo nombre comience con "P"
+//db.listado.find({"nombre":/^P/})
+
+// Vamos a buscar todos los aprendices que en el nombre tengan "an"
+//db.listado.find({"nombre":/an/})
+
+// Todos los aprendices cuyo nombre termine con "no"
+// db.listado.find({"nombre":/no$/})
+
+// db.listado.find({},{"Competencias":true})
+
+// use('sample_restaurants')
+// db.restaurants.find({},{"grades.grade":true}).limit(1)
+
+/** MANEJO DE ARREGLOS DENTRO DE UN DOCUMENTO */
+// db.listado.find({"Competencias":"Python"})
+
+//Buscar todos los que tengan "Modelado" y "Python"
+//$or me trae los que tienen solo uno o los dos
+// db.listado.find({
+//     $or:[
+//         {"Competencias":{$eq:"Python"}},
+//     {"Competencias":{$eq:"Modelado"}}
+// ]})
+// $all: Hace la busqueda sin importar el orden de los campos
+// Impone la restriccion de que deb contener los campos del arreglo
+// db.listado.find({
+//         "Competencias":{
+//             $all:["Python","Modelado"]
+//         }
+//     })
+
+//Buscar los documentos que tienen un arreglo de un tamaño específico
+//$size: nos permite buscar un arreglo de un tamño n
+
+// db.listado.find({
+//     "Competencias":{$size:3}
+// })
+
+//$push: agrega un elemento a la ultima posicion del arrego
+// db.listado.updateOne({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{
+//     $push:{
+//         "Competencias":{$each:["MongoDb"]}
+//     }
+//   })
+//   db.listado.find({})
+// Insercion por posicion
+// db.listado.updateOne({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{
+//     $push:{
+//         "Competencias":{$each:[".Net"],$position:1}
+//     }
+//   })
+// Eliminacion del ultimo elemento
+// db.listado.updateOne({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{
+//     $pop:{
+//         "Competencias": -1 //1: Ultimo elemento, -1:Primer elemento
+//     } 
+//   })
+//   db.listado.find({})
+
+// Actualizacion por indice
+// // db.listado.updateOne({
+// //     "_id": new ObjectId("6447da4569e310a232b2387b")
+// //   },{
+// //     $set:{
+//         "Competencias.0":"Analisis"
+// //     }
+// //   })
+
+// Hagamos un push con varios elementos al arreglo
+// db.listado.updateOne({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{
+//     $push:{
+//         "Competencias":{$each:["MongoDb","JAVA","Rust","JavaScript"]}
+//     }
+//   })
+// db.listado.find({})
+  //$slice: Son "tajadas" o "porciones" de los arreglos
+// db.listado.find({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{ "_id":false,
+//     "Competencias":{$slice:[1, 3]} // [pos.inic, pos.final]
+//   })  
+//   db.listado.find({})
+
+//$pull: Nos permite eliminar elementos del arreglo
+// db.listado.updateOne({
+//     "_id": new ObjectId("6447da4569e310a232b2387b")
+//   },{
+//     $pull:{
+//         "Competencias": {$in:["Python","Rust","JavaScript"]}
+//     } 
+//   })
