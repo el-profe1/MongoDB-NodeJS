@@ -1,0 +1,281 @@
+
+// I. AGGREGATIONS
+
+// use('ficha_2559202')
+// db.listado.find({})
+
+// 1. Equivalencia find() y aggregate()
+//
+// db.listado.find({"edad":{$gt:20}})
+//
+// Es lo mismo que...
+//
+// db.listado.aggregate({
+//     $match:{
+//         "edad":{
+//             $gt:20
+//         }
+//     }
+// })
+
+// limit y sort
+// db.listado.aggregate([
+// {
+//     $match:{
+//         "edad":{
+//             $lte:20
+//         }
+//     }
+// },
+// {
+//     $sort:{
+//         "edad": -1
+//     }
+// },
+// {
+//     $limit: 2
+// }
+// ])
+
+// 2. Projection
+// db.listado.find({"edad":{$gt:20}},{"_id":false,"email":true})
+// db.listado.aggregate([
+//     {
+//         $match:{
+//             "edad":{$gt:20}
+//         }
+//     },
+//     {
+//         $project:{
+//             "_id":false,
+//             "email":true
+//         }
+//     }
+// ])
+
+// 3. Concatenar atributos
+// db.listado.aggregate([
+//     {
+//         $project:{
+//             "_id":false,
+//             "fullName":{$concat:["$nombre"," ","$apellido"]}
+//         }
+//     }
+// ]) 
+
+// 4. Agrupar por atributos
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id:"$estado",
+//             nroAprendices:{$sum:1},
+//         }
+//     }
+// ])
+
+// 5. Contar
+// db.listado.aggregate([
+//     {
+//         $count:"nroAprendices"
+//     }
+// ])
+
+// 5.1 Contar por atributo
+// db.listado.aggregate([
+//     {
+//         $match : { "estado" : "Formacion" }
+//     },
+//     {
+//         $count:"nroAprendices"
+//     }
+// ])
+
+// 6. $addfields: agregar campos, por ejemplo, fechas
+// db.listado.aggregate([
+// {
+//     $addFields:{
+//         nroCompetencias: 
+//         { 
+//             $cond: 
+//             { 
+//                 if: 
+//                 { 
+//                     $isArray: "$Competencias" 
+//                 }, 
+//                 then: 
+//                 { 
+//                     $size: "$Competencias" 
+//                 }, 
+//                 else: "0"
+//             } 
+//         }
+//     }
+// }
+// ])
+
+// 7. remover campos
+// Si se hace con update many...
+// db.listado.updateMany(
+//     {},
+//     { $unset: "nroCompetencias" }
+// )
+
+// Es lo mismo que ...
+// db.listado.aggregate([
+//     { $unset: "nroCompetencias" },
+//     { $out: "listado" }
+// ])
+// db.listado.find({})
+
+// Promedio de las edades
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id:"",
+//             edadPromedio:{$avg:"$edad"},
+//         }
+//     }
+// ])
+
+// Promedio de las edades, paso a paso
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id:"",
+//             sumaEdades:{$sum:"$edad"},
+//             nroAprendices:{$sum:1}
+//         }
+//     },{
+//         $project:{
+//             edadPromedio:{
+//                 $divide:["$sumaEdades","$nroAprendices"]
+//             }
+//         }
+//     }
+// ])
+
+//Promedio, agrupando por estado de la formacion
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id:"$estado",
+//             edadPromedio:{$avg:"$edad"},
+//             sumaEdades:{$sum:"$edad"},
+//             nroAprendices:{$sum:1}
+//         }
+//     }
+// ])
+
+// II. INDICES
+
+// use('sample_restaurants')
+
+// db.restaurants.find({})
+// db.restaurants.find({"name": "Downtown Deli"}).explain("executionStats").executionStats.executionTimeMillis
+// db.restaurants.find({_id: ObjectId("5eb3d668b31de5d588f4294d")}).explain("executionStats").executionStats.executionTimeMillis
+
+// db.restaurants.createIndex({"name":1})
+// db.restaurants.find({"name": "Downtown Deli"}).explain("executionStats").executionStats.executionTimeMillis
+
+// III. Otras operaciones con AGGREGATE
+
+//$unwind
+// use('sample_restaurants')
+// db.restaurants.aggregate( [ 
+//     { 
+//         $unwind: { path: "$grades" } 
+//     },
+//     // {
+//     //     $limit: 4
+//     // }
+// ])
+
+//$map
+// use('sample_restaurants')
+// db.restaurants.aggregate([
+//     {
+//       $match:{borough:"Brooklyn"}
+//     }
+//     ,
+//      {
+//         $project: {
+//            adjustedGrades: {
+//              $map: {
+//                input: "$grades.score",
+//                as: "grade",
+//                in: { $divide: [ "$$grade", 5 ] }
+//              }
+//            }
+//         }
+//      }
+//   ])
+
+// $lookup Une los comentarios con las peliculas
+// muestra solo un comentario
+// use("sample_mflix")
+// db.movies.aggregate([
+//   {
+//     $lookup: {
+//       from: "comments",
+//       localField: "_id",
+//       foreignField: "movie_id",
+//       as: "comments",
+//     },
+//   },
+//   {
+//     $project:{"title":true,"comments":true}
+//   },
+//   {
+//     $limit: 1
+//   }
+// ]) 
+
+// IV. INDICES PARA GEOLOCALIZACION
+
+// Select the database to use.
+// use('sample_restaurants')
+// db.restaurants.find({})
+
+// Depuracion de los datos: Eliminacion restaurantes sin cooredenadas
+// db.restaurants.find({"address.coord":[]})
+
+// Creacion de los "Puntos" de ubicacion
+// db.restaurants.updateMany(
+//     {},
+//     [{
+//         $set: {
+//             location: {
+//                 type: "Point",
+//                 coordinates: [ 
+//                     { $arrayElemAt: [ "$address.coord", 0 ] },
+//                     { $arrayElemAt: [ "$address.coord", 1 ] }
+//                 ]
+//             }
+//         }
+//     }]
+// )
+
+// Creacion de los indices a partir de los puntos
+db.restaurants.createIndex({ location: "2dsphere" })
+db.neighborhoods.createIndex({ geometry: "2dsphere" })
+
+// Encontremos el restaurante con "name": "Olive'S"
+db.restaurants.findOne({"address.coord":[-73.9998042,40.7251256]})
+
+// En qué barrio está el restaurante
+db.neighborhoods.findOne({ 
+    geometry: { 
+        $geoIntersects: { 
+            $geometry: { type: "Point", 
+            coordinates: [-73.9998042,40.7251256] 
+        } 
+    } 
+} 
+}, { _id:false,name:true })
+
+// Restaurantes que estan a menos de 500m de "name": "Olive'S"
+db.restaurants.find({
+    location:{
+        $near:{
+            $maxDistance:500, $geometry:{
+                type:"point",coordinates: [-73.9998042,40.7251256]}}}}).count()
