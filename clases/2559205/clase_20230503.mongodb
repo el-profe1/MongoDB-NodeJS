@@ -1,0 +1,170 @@
+//utilizando Aggregate podemos hacer la misma busqueda que con find()
+
+// db.listado.find(
+//     {
+//     "edad":{$lte:18}
+// },{
+//     "_id":false, "nombre":true
+// }
+// )
+
+// Hacemos la misma busqueda con Aggregate
+//Ejemplo de búsqueda haciendo concatenacion del nombre y el apellido
+// db.listado.aggregate([
+//     {
+//         $match:{
+//             "edad":{$lte:18}
+//         }
+//     },
+//     {
+//         $project:{
+//             "_id":false,
+//             "nombreCompleto":{
+//                 $concat:["$nombre"," ","$apellido"]
+//             },
+//             "edad":true
+//         }
+//     },
+//     {
+//         $sort: {"edad": -1} 
+//     },
+//     {
+//         $limit: 1
+//     }
+// ])
+
+// db.listado.find({})
+
+//Cuantos aprendices hay en "Formacion"
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id: "$estado", //No es el id de los documentos, sino el campo por el que agrupamos
+//             nroAprendices:{
+//                 $sum: 1
+//             }
+//         }
+//     }
+// ])
+
+// Cuantos aprendices hay en formacion
+db.listado.aggregate([
+    {
+        $match:{
+            "estado":"Formacion"
+        }
+    },{
+        $count: "nroAprendices"
+    }
+])
+
+// Cuantas competencias tiene un aprendiz
+// db.listado.aggregate([
+//     {
+//         $addFields:{ //Vamos a agregar un campo
+//             "nroDeCompetencias":{
+//                 $cond:{
+//                     if:{
+//                         $isArray: "$Competencias"
+//                     },
+//                     then:{
+//                         $size: "$Competencias"
+//                     },
+//                     else: 0
+//                 }
+//             }
+//         }
+//     }
+// ])
+db.listado.find({})
+
+// Como podemos remover el campo que acabamos de crear
+// db.listado.aggregate([
+//     { 
+//         $unset: "nroDeCompetencias" 
+//     },{
+//         $out : "listado"
+//     }
+// ])
+//
+// Es lo mismo...
+// db.listado.updateMany({},{
+//     $unset: "nroDeCompetencias"
+// })
+
+// Cual es el promedio de edad de los aprendices
+// PASO A PASO:
+// db.listado.aggregate([
+//     {
+//         $group:{
+//             _id:"",
+//             sumaEdades:{
+//                 $sum: "$edad",
+//             },
+//             nroAprendices:{
+//                 $sum: 1
+//             }
+//         }
+//     },{
+//         $project:{
+//             edadPromedio :{
+//                 $divide:["$sumaEdades","$nroAprendices"]
+//             }
+//         }
+//     }
+// ])
+
+// Cual es el promedio de edad de los aprendices
+// UN SOLO PASO:
+db.listado.aggregate([
+    {
+        $group:{
+            _id:"",
+            // sumaEdades:{$sum: "$edad"},
+            // nroAprendices:{ $sum: 1 },
+            edadPromedio : {$avg: "$edad"}
+        }
+    }
+])
+
+use('sample_airbnb')
+db.listingsAndReviews.aggregate([
+    {
+      '$match': {
+        'address.country': 'Australia', 
+        'address.market': 'Sydney', 
+        'address.suburb': {
+          '$exists': true, 
+          '$ne': ''
+        }
+      }
+    }, {
+      '$group': {
+        '_id': '$address.suburb', 
+        'precioPromedio': {
+          '$avg': '$price'
+        }
+      }
+    }, {
+      '$sort': {
+        'precioPromedio': 1
+      }
+    }, {
+      '$limit': 10
+    }
+  ])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
