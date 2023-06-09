@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "54c0c9d9-2dd1-4f0c-a446-3ca5cbf4987d",
+		"name": "Pruebas API sample_mflix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "9161829"
+	},
+	"item": [
+		{
+			"name": "sample_mflix root",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body matches string\", function () {\r",
+							"pm.expect(pm.response.text()).to.include(\"API de peliculas\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies find",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/movies"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies findOne",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/movies/573a1390f29313caabcd4135"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies insertOne",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Inglorious Basterds\",\r\n    \"writer\": \"Quentin Tarantino\",\r\n    \"year\": 2009,\r\n    \"actors\": [\r\n        \"Brad Pitt\",\r\n        \"Diane Kruger\",\r\n        \"Eli Roth\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/movies"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies insertMany",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n    \"title\": \"Club de la pelea\",\r\n    \"writer\": \"Chuck Palahniuk\",\r\n    \"year\": 1999,\r\n    \"actors\": [\r\n        \"Brad Pitt\", \r\n        \"Edward Norton\"\r\n    ]\r\n},\r\n{\r\n    \"title\": \"Tiempos violentos\",\r\n    \"writer\": \"Quentin Tarantino\",\r\n    \"year\": 1994,\r\n    \"actors\": [\r\n        \"John Travolta\",\r\n        \"Uma Thurman\"\r\n    ]\r\n}]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/movies/add-movies"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies updateOne",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"UpdateOne test\", function () {\r",
+							"    pm.response.to.have.jsonBody({\r",
+							"        \"message\": \"updated\",\r",
+							"        \"data\": {\r",
+							"            \"title\": \"Bastardos Sin Gloria\",\r",
+							"            \"year\": 2010\r",
+							"        },\r",
+							"        \"id\": \"6474318043f6d985380213d0\"\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Bastardos Sin Gloria\",\r\n    \"year\": 2010\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/movies/64823666dc748e67f37e3f4c"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix movies deleteOne",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/movies/6474318043f6d985380213d0"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix comments find",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix comments insertMany",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Daniel Loaiza\",\r\n    \"email\": \"deloaiza26@misena.edu.co\",\r\n    \"movie_id\": \"573a1391f29313caabcd8543\",\r\n    \"text\": \"Maravillosa. Cine de la mas alta calidad…\",\r\n    \"date\": \"2023-05-31T13:15:00.000+00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/comments"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix comments updateOne",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"EL profe\",\r\n    \"email\": \"elprofe@misena.edu.co\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/comments/6476d0db5b0a87fd25570bfc"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix comments deleteOne",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3000/comments/6476d0db5b0a87fd25570bfc"
+			},
+			"response": []
+		},
+		{
+			"name": "sample_mflix comments findOne",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/comments/5a9427648b0beebeb69579e7"
+			},
+			"response": []
+		}
+	]
+}
